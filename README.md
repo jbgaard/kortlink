@@ -4,5 +4,5 @@ npm install mysql
 npm install express
 
 *** TIL DEV ***
-npm install nodemon -dev
+npm install nodemon --save-dev
 ```
