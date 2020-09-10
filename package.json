@@ -1,0 +1,22 @@
+{
+  "name": "kortlinknode",
+  "version": "0.1.0",
+  "description": "kortlinkRedirector",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://gogs.famas.ml/famas/kortlink.git"
+  },
+  "keywords": [
+    "kortlink"
+  ],
+  "author": "famasmaster78",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
