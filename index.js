@@ -56,7 +56,8 @@ app.get("/", function (req, res){
 	// Opret data varieble
 	let data = {};
 	data["counter"] = historikJSON["counter"];
-	data["historik"] = historikJSON_STRHistorik;
+	data["historik"] = historikJSON["historik"];
+	data["historikString"] = historikJSON_STRHistorik;
 
 	// Brug index fra viewengine mappen
 	res.render('index', { data: data })
@@ -89,7 +90,7 @@ app.get("/:kortlink", function (req, res){
 		    
 		    // Tilføj HTTP hvis ingen af disse er til stede.
 		    redirectURL = 'http://' + sqlResultLink;
-		    
+
 		}else{
 
 			// Hvis denne allerede indeholder en af disse.

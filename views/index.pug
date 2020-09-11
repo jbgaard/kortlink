@@ -1,13 +1,21 @@
 html
-  head
-    title= "Kortlink forside"
-  body
-    h1= "Oversigt"
+	head
+		title= "Kortlink forside"
+	body
+		h1= "Oversigt"
 
-    h3= "Besøg: " + data["counter"]
+		h3= "Besøg: " + data["counter"]
 
-    hr
+		hr
 
-    p= "Historik:"
+		p= "Historik:"
 
-    span= data["historik"]
+		each val, index in data["historik"]
+
+			ul
+				li= "Id: " + val[0]["id"]
+				li= "Kortlink: " + val[0]["kortlink"]
+				li= "Link: " + val[0]["link"]
+		else
+			ul
+				li= "There are no values"
