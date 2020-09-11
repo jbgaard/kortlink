@@ -85,8 +85,15 @@ app.get("/:kortlink", function (req, res){
 		// res.send(`KortlinkNode - Andet - ${sqlResultLink}`);
 
 		// Tjek om string indeholder HTTP eller HTTPS ved hjælp af denne funktion
-		if (sqlResultLink.substring(0, 7) !== 'http://' || sqlResultLink.substring(0, 8) !== 'https://') {
+		if (sqlResultLink.substring(0, 7) !== 'http://' && sqlResultLink.substring(0, 8) !== 'https://' && sqlResultLink.substring(0, 4) !== 'www.') {
+		    
+		    // Tilføj HTTP hvis ingen af disse er til stede.
 		    redirectURL = 'http://' + sqlResultLink;
+		    
+		}else{
+
+			// Hvis denne allerede indeholder en af disse.
+			redirectURL = sqlResultLink;
 		}
 
 		// Tjek om filen historik.json er oprettet, ellers opret den
