@@ -15,15 +15,29 @@ app.set("view engine", "pug");
 
 // Mysql Connection info
 var connection = mysql.createConnection({
-  host     : '188.114.165.148',
+  host     : 'localhost',
   user     : 'jonas',
   password : 'mBuaj28181',
   database : 'kortlinkdb'
 });
 
+// Promise til at forbinde til DB hvis disconnected
+var connectDB = new Promise((resolve, reject) => {
+
+	if (connection.state === "disconnected"){
+
+		return resolve(connection.connect());
+
+	}else {
+	
+		resolve("Connected");
+	
+}
+
+});
 
 // Make connection to Mysql DB
-connection.connect();
+// connection.connect();
 
 // Test express
 app.get("/", function (req, res){
@@ -67,10 +81,30 @@ app.get("/", function (req, res){
 // Test express
 app.get("/:kortlink", function (req, res){
 
+	// Make connection to DB
+	// connection.connect();
+
+	// Tjek om mysql allerede er forbundet
+	// if(connection.state === "disconnected"){
+		
+	//	connection.connect();
+
+	// }
+
+	connectDB.then((res)=> {
+	
+		console.log("Connected");
+
+	}).catch((res) => {
+
+		console.log("Error");
+	
+})
+
 	// Var til kortlink som er efterspurgt
 	var kortlinkGet = req.params.kortlink;
 
-	// Test MYSQL
+	// Mysql
 	connection.query(`SELECT * FROM kortlink WHERE kortlink="${kortlinkGet}"`, function (error, results, fields) {
 	  if (error) throw error;
 	  
@@ -134,10 +168,20 @@ app.get("/:kortlink", function (req, res){
 		// Redirect brugeren til dette site.
 		res.redirect(redirectURL);
 
+		// Afslut mysql forbindelse
+		// connection.end();
+
+		// res.end();
+
 	  }else {
 
 	  	console.log("Kunne ikke finde noget");
 	  	res.send("Kunne ikke finde noget");
+
+		// Afslut mysql forbindelse
+		// connection.end();
+
+		// res.end();
 
 	  }
 
@@ -145,6 +189,17 @@ app.get("/:kortlink", function (req, res){
 
 	console.log(`Get modtaget! - Andet - ${kortlinkGet}`);
 
+	// Afslut mysql forbindelse
+	// connection.end();
+
 });
+
+app.get("*", (req, res) => {
+
+	res.send("404 Fejl, kunne ikke finde den ønskede side");
+
+});
+
+console.log("App started on port 3001");
 
 app.listen(3001);
