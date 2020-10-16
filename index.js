@@ -14,30 +14,65 @@ app.set("view engine", "pug");
 
 
 // Mysql Connection info
-var connection = mysql.createConnection({
-  host     : 'localhost',
+/*var connection = mysql.createConnection({
+  host     : '188.114.165.148',
   user     : 'jonas',
   password : 'mBuaj28181',
   database : 'kortlinkdb'
-});
+});*/
 
-// Promise til at forbinde til DB hvis disconnected
-var connectDB = new Promise((resolve, reject) => {
-
-	if (connection.state === "disconnected"){
-
-		return resolve(connection.connect());
-
-	}else {
-	
-		resolve("Connected");
-	
+var dbConfig = {
+	host     : '188.114.165.148',
+	user     : 'jonas',
+	password : 'mBuaj28181',
+	database : 'kortlinkdb'
 }
 
-});
+var connection;
+
+function handleDisconnect() {
+  connection = mysql.createConnection(dbConfig); // Recreate the connection, since
+                                                  // the old one cannot be reused.
+
+  connection.connect(function(err) {              // The server is either down
+    if(err) {                                     // or restarting (takes a while sometimes).
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+    }                                     // to avoid a hot loop, and to allow our node script to
+  });                                     // process asynchronous requests in the meantime.
+                                          // If you're also serving http, display a 503 error.
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+      handleDisconnect();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+      throw err;                                  // server variable configures this)
+    }
+  });
+}
+
+handleDisconnect();
+
 
 // Make connection to Mysql DB
 // connection.connect();
+
+app.get("/disconnect", (req, res) => {
+
+	// Tjek om mysql er forbundet
+	if (connection.state === "disconnected") {
+
+		// Forbindelsen er allerede blevet terminated.
+		res.send("Connection already terminated");
+
+	}else {
+
+		// Disconeect
+		connection.end();
+		res.send("Mysql, disconnected");
+	}
+
+})
 
 // Test express
 app.get("/", function (req, res){
@@ -84,30 +119,13 @@ app.get("/:kortlink", function (req, res){
 	// Make connection to DB
 	// connection.connect();
 
-	// Tjek om mysql allerede er forbundet
-	// if(connection.state === "disconnected"){
-		
-	//	connection.connect();
-
-	// }
-
-	connectDB.then((res)=> {
-	
-		console.log("Connected");
-
-	}).catch((res) => {
-
-		console.log("Error");
-	
-})
-
 	// Var til kortlink som er efterspurgt
 	var kortlinkGet = req.params.kortlink;
 
 	// Mysql
 	connection.query(`SELECT * FROM kortlink WHERE kortlink="${kortlinkGet}"`, function (error, results, fields) {
 	  if (error) throw error;
-	  
+
 	  //  Tjek om der er resultater
 	  if (results != "") {
 	  	console.log(results[0]);
@@ -121,7 +139,7 @@ app.get("/:kortlink", function (req, res){
 
 		// Tjek om string indeholder HTTP eller HTTPS ved hjælp af denne funktion
 		if (sqlResultLink.substring(0, 7) !== 'http://' && sqlResultLink.substring(0, 8) !== 'https://' && sqlResultLink.substring(0, 4) !== 'www.') {
-		    
+
 		    // Tilføj HTTP hvis ingen af disse er til stede.
 		    redirectURL = 'http://' + sqlResultLink;
 
