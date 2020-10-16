@@ -16,6 +16,8 @@
   "author": "famasmaster78",
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^5.0.0-alpha2",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "pug": "^3.0.0"

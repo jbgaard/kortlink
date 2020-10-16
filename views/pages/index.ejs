@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortlink forside</title>
+    <link rel="stylesheet" href="/bootstrap.css">
+    <style>
+        body { padding:50px; }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    
+    <div class="container">
+
+        <!-- <span class="danger">Lookups: <%= data.counter %></span> -->
+        <h3>Lookups i alt: <span class="badge rounded-pill bg-info m-2"><%= data.counter %></span></h3>
+
+    </div>
+
+    <hr>
+
+    <div class="container">
+
+        <h1>Historik:</h1>
+
+    </div>
+    
+</body>
+</html>

@@ -9,8 +9,12 @@ const mysql = require("mysql");
 const express = require("express");
 const app = express();
 
+// EJS viewengine
+const ejs = require('ejs');
+
 // Sæt viewengine til Pug
-app.set("view engine", "pug");
+// app.set('views', __dirname + '/views');
+app.set("view engine", "ejs");
 
 
 // Mysql Connection info
@@ -72,6 +76,14 @@ app.get("/disconnect", (req, res) => {
 		res.send("Mysql, disconnected");
 	}
 
+});
+
+// Bootstrap css
+app.get("/bootstrap.css", (req, res) => {
+
+	console.log("Downloader bootstrap.css");
+	res.download(`${__dirname}/node_modules/bootstrap/dist/css/bootstrap.css`);
+
 })
 
 // Test express
@@ -109,7 +121,7 @@ app.get("/", function (req, res){
 	data["historikString"] = historikJSON_STRHistorik;
 
 	// Brug index fra viewengine mappen
-	res.render('index', { data: data })
+	res.render('pages/index', { data: data });
 
 });
 
