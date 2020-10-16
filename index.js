@@ -57,6 +57,22 @@ function handleDisconnect() {
 
 handleDisconnect();
 
+// Tilføj http/https til link
+function checkLink(link) {
+	if (link.substring(0, 7) !== 'http://' && link.substring(0, 8) !== 'https://' && link.substring(0, 4) !== 'www.') {
+
+		// Tilføj HTTP hvis ingen af disse er til stede.
+		redirectURL = 'http://' + link;
+		return redirectURL;
+
+	}else{
+
+		// Hvis denne allerede indeholder en af disse.
+		redirectURL = link;
+		return redirectURL;
+	}
+}
+
 
 // Make connection to Mysql DB
 // connection.connect();
@@ -147,19 +163,11 @@ app.get("/:kortlink", function (req, res){
 		var sqlResultLink = results[0]["link"];
 		var sqlResultKortlink = results[0]["kortlink"];
 
-		// res.send(`KortlinkNode - Andet - ${sqlResultLink}`);
-
 		// Tjek om string indeholder HTTP eller HTTPS ved hjælp af denne funktion
-		if (sqlResultLink.substring(0, 7) !== 'http://' && sqlResultLink.substring(0, 8) !== 'https://' && sqlResultLink.substring(0, 4) !== 'www.') {
+		redirectURL = checkLink(sqlResultLink);
 
-		    // Tilføj HTTP hvis ingen af disse er til stede.
-		    redirectURL = 'http://' + sqlResultLink;
-
-		}else{
-
-			// Hvis denne allerede indeholder en af disse.
-			redirectURL = sqlResultLink;
-		}
+		// Indsæt i results så de bliver gemt korrekt i historik.json
+		results[0]["link"] = redirectURL;
 
 		// Tjek om filen historik.json er oprettet, ellers opret den
 		if (!(fs.existsSync("./historik.json"))) {
