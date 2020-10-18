@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortlink forside</title>
+    <link rel="stylesheet" href="/bootstrap.css">
+    <style>
+        body { padding:50px; }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    
+    <h4 class="m-2">Opret nyt kortlink</h4>
+
+    <form method="post" class="m-2">
+        <div class="mb-3">
+            <label for="inputLink" class="form-label">Link</label>
+            <input name="inputLink" type="text" class="form-control" id="inputLink" placeholder="https://status.e-boks.com/" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="inputKortlink" class="form-label">Kortlink</label>
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                    https://kortlink.famas.ml/
+                </span>
+            </div>
+            <input name="inputKortlink" type="text" class="form-control" id="inputKortlink" placeholder="Kortlink-navn" aria-describedby="emailHelp">
+        </div>
+        <button type="submit" class="btn btn-primary">Opret</button>
+    </form>
+    
+    <% if(result && result == "success") { %>
+
+        <div style="opacity: 1;" class="toast d-flex align-items-center text-white bg-primary m-2">
+            <div class="toast-body">
+                Kortlink oprettet!
+            </div>
+            <button type="button" class="btn-close ml-auto mr-2" data-dismiss="toast" aria-label="Close"></button>
+        </div>
+
+    <% } %>
+    
+</body>
+</html>

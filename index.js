@@ -12,6 +12,11 @@ const app = express();
 // EJS viewengine
 const ejs = require('ejs');
 
+// Læs Post params
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 // Sæt viewengine til Pug
 // app.set('views', __dirname + '/views');
 app.set("view engine", "ejs");
@@ -49,10 +54,20 @@ function handleDisconnect() {
     console.log('db error', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
       handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
-    }
+    } else if (err.code === 'ECONNRESET') {
+		handleDisconnect();
+	} else {                                      // connnection idle timeout (the wait_timeout
+		throw err;                                  // server variable configures this)
+	 }
   });
+
+  // Keep mysql connection alive - gentages en gang i timen.
+  setInterval(() => {
+
+	// Select 1 for at holde forbindelsen online.
+	connection.query(`SELECT 1`);
+
+  }, 3600);
 }
 
 handleDisconnect();
@@ -94,7 +109,40 @@ app.get("/disconnect", (req, res) => {
 
 });
 
-// Bootstrap css
+// Get til oprettelse af nyt link
+app.get("/opret", (req, res) => {
+
+	// Opret nyt kortlink
+	res.render("pages/opret", {result: ""});
+
+});
+
+// Modtag post omkring oprettelse af nyt link
+app.post("/opret", (req, res) => {
+
+	console.log(req.body.inputLink);
+
+	var inputLink = req.body.inputLink;
+	var inputKortlink = req.body.inputKortlink;
+
+	// Opret sql variable
+	sql = `INSERT INTO kortlink (link, kortlink) VALUES ("${inputLink}", "${inputKortlink}")`;
+
+	// Kør connection som indæstter i DB
+	connection.query(sql, (err, result) => {
+
+		if (err) throw err;
+		console.log("Kortlink oprettet!");
+
+		res.render("pages/opret", {result: "success"});
+
+	});
+
+	// res.send("Post modtaget");
+
+});
+
+// Bootstrap css download
 app.get("/bootstrap.css", (req, res) => {
 
 	console.log("Downloader bootstrap.css");
