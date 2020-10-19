@@ -175,6 +175,14 @@ app.get("/bootstrap.css", (req, res) => {
 
 })
 
+// Favicon download
+app.get("/favicon.ico", (req, res) => {
+
+	console.log("Downloader favicon.ico");
+	res.download(`${__dirname}/media/favicon.png`);
+
+})
+
 // Test express
 app.get("/", function (req, res){
 
