@@ -183,6 +183,7 @@ app.get("/", function (req, res){
 	data["counter"] = historikJSON["counter"];
 	data["historik"] = historikJSON["historik"];
 	data["historikString"] = historikJSON_STRHistorik;
+	data["result"] = "";
 
 	// Brug index fra viewengine mappen
 	res.render('pages/index', { data: data });

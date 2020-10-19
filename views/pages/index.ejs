@@ -28,34 +28,34 @@
 
     <hr>
 
-    <div class="container-fluid">
+    <div class="container-fluid d-flex">
 
-        <h1>Historik:</h1>
-        <div class="d-flex justify-content-center">
-            <% if(data["historik"] != "") { %>
-                <% data["historik"].forEach((item => { %>
+        <div class="w-75">
 
-                    <div class="card m-2" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= JSON.stringify(item[0]["kortlink"]).replace(/\"/g, ""); %></h5>
-                            <p class="card-text">Id: <%= JSON.stringify(item[0]["id"]).replace(/\"/g, ""); %></p>
-                            <p class="card-text">Link: <%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %></p>
-                            <a href=<%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
-                        </div>
-                    </div>
+					<h1>Historik:</h1>
+	        <div class="d-inline-flex flex-wrap justify-content-center">
+	            <% if(data["historik"] != "") { %>
+	                <% data["historik"].forEach((item => { %>
 
-                    <!-- <p><%= JSON.stringify(item, null, 4); %></p> -->
-    <!--                 <div class="bg-info">
-                        <p><%= JSON.stringify(item[0]["kortlink"], null, 4); %></p>
+	                    <div class="card m-2" style="width: 18rem;">
+	                        <div class="card-body">
+	                            <h5 class="card-title"><%= JSON.stringify(item[0]["kortlink"]).replace(/\"/g, ""); %></h5>
+	                            <p class="card-text">Id: <%= JSON.stringify(item[0]["id"]).replace(/\"/g, ""); %></p>
+	                            <p class="card-text">Link: <%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %></p>
+	                            <a href=<%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
+	                        </div>
+	                    </div>
 
+	                    <% })); %>
+	            <% }else { %>
+	                <p>Ingen historik at vise.</p>
+	            <% }; %>
 
-                    </div> -->
+	        </div>
 
-                    <% })); %>
-            <% }else { %>
-                <p>Ingen historik at vise.</p>
-            <% }; %>
         </div>
+
+				<%- include('../partials/opret'); %>
 
     </div>
 
