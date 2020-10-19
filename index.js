@@ -142,6 +142,31 @@ app.post("/opret", (req, res) => {
 
 });
 
+// Modtag post omkring oprettelse af nyt link
+app.post("/", (req, res) => {
+
+	console.log(req.body.inputLink);
+
+	var inputLink = req.body.inputLink;
+	var inputKortlink = req.body.inputKortlink;
+
+	// Opret sql variable
+	sql = `INSERT INTO kortlink (link, kortlink) VALUES ("${inputLink}", "${inputKortlink}")`;
+
+	// Kør connection som indæstter i DB
+	connection.query(sql, (err, result) => {
+
+		if (err) throw err;
+		console.log("Kortlink oprettet!");
+
+		res.redirect("/");
+
+	});
+
+	// res.send("Post modtaget");
+
+});
+
 // Bootstrap css download
 app.get("/bootstrap.css", (req, res) => {
 
