@@ -159,7 +159,7 @@ app.post("/", (req, res) => {
 		if (err) throw err;
 		console.log("Kortlink oprettet!");
 
-		res.redirect("/");
+		res.redirect("/?result=success");
 
 	});
 
@@ -216,7 +216,11 @@ app.get("/", function (req, res){
 	data["counter"] = historikJSON["counter"];
 	data["historik"] = historikJSON["historik"];
 	data["historikString"] = historikJSON_STRHistorik;
-	data["result"] = "";
+	if (req.query.result == "success") {
+		data["result"] = "success";
+	}else {
+		data["result"] = "";
+	}
 
 	// Brug index fra viewengine mappen
 	res.render('pages/index', { data: data });
