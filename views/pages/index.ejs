@@ -11,12 +11,10 @@
 </head>
 <body>
 
-    <% console.log(JSON.stringify(data)); %>
-    
     <header>
         <%- include('../partials/header'); %>
     </header>
-    
+
     <div class="container-fluid">
 
         <!-- <span class="danger">Lookups: <%= data.counter %></span> -->
@@ -36,7 +34,7 @@
         <div class="d-flex justify-content-center">
             <% if(data["historik"] != "") { %>
                 <% data["historik"].forEach((item => { %>
-  
+
                     <div class="card m-2" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title"><%= JSON.stringify(item[0]["kortlink"]).replace(/\"/g, ""); %></h5>
@@ -45,14 +43,14 @@
                             <a href=<%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
                         </div>
                     </div>
-                    
+
                     <!-- <p><%= JSON.stringify(item, null, 4); %></p> -->
     <!--                 <div class="bg-info">
                         <p><%= JSON.stringify(item[0]["kortlink"], null, 4); %></p>
-                        
-    
+
+
                     </div> -->
-                
+
                     <% })); %>
             <% }else { %>
                 <p>Ingen historik at vise.</p>
@@ -60,6 +58,6 @@
         </div>
 
     </div>
-    
+
 </body>
 </html>
