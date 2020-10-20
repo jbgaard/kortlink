@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortlink forside</title>
+    <link rel="stylesheet" href="/bootstrap.css">
+    <style>
+        body { padding:50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <div class="container-fluid">
+
+        <!-- <span class="danger">Lookups: <%= data.counter %></span> -->
+        <% if(data["counter"] != "") { %>
+            <h3 style="width: 100%;">Lookups i alt: <span class="badge rounded-pill bg-info m-2"><%= data.counter %></span></h3>
+        <% }else { %>
+            <h3 style="width: 100%;">Lookups i alt: <span class="badge rounded-pill bg-warning m-2">ZERO</span></h3>
+        <% }; %>
+
+    </div>
+
+    <hr>
+
+    <div class="container-fluid d-flex">
+
+        <div class="w-75">
+
+					<h1>Historik:</h1>
+	        <div class="d-inline-flex flex-wrap justify-content-center">
+	            <% if(data["historik"] != "") { %>
+	                <% data["historik"].forEach((item => { %>
+
+	                    <div class="card m-2" style="width: 18rem;">
+	                        <div class="card-body">
+	                            <h5 class="card-title"><%= JSON.stringify(item[0]["kortlink"]).replace(/\"/g, ""); %></h5>
+	                            <p class="card-text">Id: <%= JSON.stringify(item[0]["id"]).replace(/\"/g, ""); %></p>
+	                            <p class="card-text">Link: <%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %></p>
+	                            <a href=<%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
+	                        </div>
+	                    </div>
+
+	                    <% })); %>
+	            <% }else { %>
+	                <p>Ingen historik at vise.</p>
+	            <% }; %>
+
+	        </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

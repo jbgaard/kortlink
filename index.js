@@ -183,7 +183,79 @@ app.get("/favicon.ico", (req, res) => {
 
 })
 
-// Test express
+// Se alle oprettede kortlinks
+app.get("/all", function (req, res){
+
+
+	// Tjek om filen historik.json er oprettet, ellers opret den
+	if (!(fs.existsSync("./historik.json"))) {
+		fs.writeFileSync("./historik.json", "{}");
+	}
+
+	// Indlæs histok.json som raw data
+	var historikJSONRAW = fs.readFileSync("./historik.json");
+
+	// Omdan til JSON objekt
+	var historikJSON = JSON.parse(historikJSONRAW);
+
+	// Tjek om counter & historik er oprettet, ellers opret dem.
+	if (!("counter" in historikJSON)) {
+		historikJSON["counter"] = 0;
+	}
+	if (!("historik" in historikJSON)) {
+		historikJSON["historik"] = [];
+	}
+
+	// Omdan til string igen og skriv til filen igen.
+	var historikJSON_STRHistorik = JSON.stringify(historikJSON["historik"], null, 4);
+
+	console.log("Viser alle kortlinks!");
+
+	// Opret data varieble
+	let data = {};
+
+	// Mysql
+	connection.query(`SELECT * FROM kortlink WHERE kortlink="${kortlinkGet}"`, function (error, results, fields) {
+	  if (error) throw error;
+
+	  //  Tjek om der er resultater
+	  if (results != "") {
+	  	console.log(results[0]);
+
+	  	// Indsæt modtaget data i data variable.
+			data["result"] = results;
+
+
+	  }else {
+
+	  	console.log("Kunne ikke finde noget");
+	  	res.send("Kunne ikke finde noget");
+
+		// Afslut mysql forbindelse
+		// connection.end();
+
+		// res.end();
+
+	  }
+
+	});
+
+	// Indsæt data i data variable
+	data["counter"] = historikJSON["counter"];
+	// data["historik"] = historikJSON["historik"];
+	data["historikString"] = historikJSON_STRHistorik;
+	if (req.query.result == "success") {
+		data["result"] = "success";
+	}else {
+		data["result"] = "";
+	}
+
+	// Brug index fra viewengine mappen
+	res.render('pages/index', { data: data });
+
+});
+
+// Index / forside
 app.get("/", function (req, res){
 
 
