@@ -5,6 +5,25 @@
 	<!-- <label class="form-label" for="inputLinkRedir"></label> -->
 	<input class="form-control w-100" type="text" name="inputLinkRedir" id="inputLinkRedir" placeholder="Eks: Eboks">
 
-	<button onclick="window.location.href = `https://kortlink.famas.ml/${document.getElementById('inputLinkRedir').value}`" class="btn btn-primary mt-3" type="button" name="button">Gå til</button>
+	<button id="goLinkBtn" onclick="window.location.href = `https://kortlink.famas.ml/${document.getElementById('inputLinkRedir').value}`" class="btn btn-primary mt-3" type="button" name="button">Gå til</button>
+
+	<script type="text/javascript">
+
+		// Redir når der trykkes på enter i Input feltet.
+		// Get the input field
+		var input = document.getElementById("inputLinkRedir");
+
+		// Execute a function when the user releases a key on the keyboard
+		input.addEventListener("keyup", function(event) {
+		  // Number 13 is the "Enter" key on the keyboard
+		  if (event.keyCode === 13) {
+		    // Cancel the default action, if needed
+		    event.preventDefault();
+		    // Trigger the button element with a click
+		    document.getElementById("goLinkBtn").click();
+		  }
+		});
+
+	</script>
 
 </div>
