@@ -31,7 +31,7 @@ app.set("view engine", "ejs");
 });*/
 
 var dbConfig = {
-	host     : '188.114.165.148',
+	host     : 'localhost',
 	user     : 'jonas',
 	password : 'mBuaj28181',
 	database : 'kortlinkdb'
