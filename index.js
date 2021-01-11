@@ -31,7 +31,7 @@ app.set("view engine", "ejs");
 });*/
 
 var dbConfig = {
-	host     : 'localhost',
+	host     : 'famas.ml',
 	user     : 'jonas',
 	password : 'mBuaj28181',
 	database : 'kortlinkdb'
