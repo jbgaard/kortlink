@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 3001
 
 # Definer kommando som kan bruges til at starte app
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
