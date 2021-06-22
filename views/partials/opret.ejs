@@ -4,17 +4,23 @@
 
 	<form method="post" class="m-2">
 			<div class="mb-3">
-					<label for="inputLink" class="form-label">Link</label>
-					<input required name="inputLink" type="text" class="form-control" id="inputLink" placeholder="https://status.e-boks.com/" aria-describedby="link">
+				<label for="inputLink" class="form-label">Link</label>
+				<input required name="inputLink" type="text" class="form-control" id="inputLink" placeholder="https://status.e-boks.com/" aria-describedby="link">
 			</div>
 			<div class="mb-3">
-					<label for="inputKortlink" class="form-label">Kortlink</label>
-					<div class="col-auto">
-							<span id="passwordHelpInline" class="form-text">
-									https://link.famas.ml/
-							</span>
-					</div>
-					<input required name="inputKortlink" type="text" class="form-control" id="inputKortlink" placeholder="Kortlink-navn" aria-describedby="kortlink">
+				<label for="inputKortlink" class="form-label">Kortlink</label>
+				<div class="col-auto">
+					<span id="passwordHelpInline" class="form-text">
+						https://link.famas.ml/
+					</span>
+				</div>
+				<input required name="inputKortlink" type="text" class="form-control" id="inputKortlink" placeholder="Kortlink-navn" aria-describedby="kortlink">
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" name="hiddenCheck" type="checkbox" value="true" id="hiddenCheck">
+				<label class="form-check-label" for="hiddenCheck">
+					Opret som skjult
+				</label>
 			</div>
 			<button type="submit" class="btn btn-primary">Opret</button>
 	</form>

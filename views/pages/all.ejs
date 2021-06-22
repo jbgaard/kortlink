@@ -28,30 +28,40 @@
 
     <hr>
 
-    <div class="container-fluid d-flex">
+    <div class="container-fluid d-flex flex-wrap">
 
         <div class="w-75">
 
-					<h1>Historik:</h1>
-	        <div class="d-inline-flex flex-wrap justify-content-center">
-	            <% if(data["historik"] != "") { %>
-	                <% data["historik"].forEach((item => { %>
+                    <h1>Alle offentlige kortlinks:</h1>
+                        <div class="d-inline-flex flex-wrap justify-content-center">
+                            <% if(data["result"] != "") { %>
+                                <% data["result"].forEach((item => { %>
 
-	                    <div class="card m-2" style="width: 18rem;">
-	                        <div class="card-body">
-	                            <h5 class="card-title"><%= JSON.stringify(item[0]["kortlink"]).replace(/\"/g, ""); %></h5>
-	                            <p class="card-text">Id: <%= JSON.stringify(item[0]["id"]).replace(/\"/g, ""); %></p>
-	                            <p class="card-text">Link: <%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %></p>
-	                            <a href=<%= JSON.stringify(item[0]["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
-	                        </div>
-	                    </div>
+                                    <div class="card m-2" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= JSON.stringify(item["kortlink"]).replace(/\"/g, ""); %></h5>
+                                            <p class="card-text">Id: <%= JSON.stringify(item["id"]).replace(/\"/g, ""); %></p>
+                                            <p class="card-text">Link: <%= JSON.stringify(item["link"]).replace(/\"/g, ""); %></p>
+                                            <a href=<%= JSON.stringify(item["link"]).replace(/\"/g, ""); %> class="btn btn-primary">Besøg</a>
+                                        </div>
+                                    </div>
 
-	                    <% })); %>
-	            <% }else { %>
-	                <p>Ingen historik at vise.</p>
-	            <% }; %>
+                                    <% })); %>
+                            <% }else { %>
+                                <p>Ingen historik at vise.</p>
+                            <% }; %>
 
-	        </div>
+                        </div>
+
+        </div>
+
+        <div class="d-inline-flex flex-column">
+
+            <%- include('../partials/opret'); %>
+
+            <hr>
+
+            <%- include('../partials/redir'); %>
 
         </div>
 

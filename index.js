@@ -32,8 +32,8 @@ app.set("view engine", "ejs");
 
 var dbConfig = {
 	host     : 'famas.ml',
-	user     : 'jonas',
-	password : 'mBuaj28181',
+	user     : 'kortlink-user',
+	password : 'bigPiss67',
 	database : 'kortlinkdb'
 }
 
@@ -124,9 +124,29 @@ app.post("/opret", (req, res) => {
 
 	var inputLink = req.body.inputLink;
 	var inputKortlink = req.body.inputKortlink;
+var inputHiddenCheck = req.body.hiddenCheck;
+	let inputHidden;
+
+	// Tjek om kortlink skal være skjult
+	if (inputHiddenCheck == "true") {
+
+		console.log("Kortlink er hidden!")
+
+		// Opdater
+		inputHidden = true;
+
+	}else {
+
+		console.log("Kortlink er IKKE hidden!")
+
+		// Opdater
+		inputHidden = false;
+
+	}
 
 	// Opret sql variable
-	sql = `INSERT INTO kortlink (link, kortlink) VALUES ("${inputLink}", "${inputKortlink}")`;
+	sql = `INSERT INTO kortlink (link, kortlink, hidden) VALUES ("${inputLink}", "${inputKortlink}", ${inputHidden})`;
+
 
 	// Kør connection som indæstter i DB
 	connection.query(sql, (err, result) => {
@@ -149,9 +169,28 @@ app.post("/", (req, res) => {
 
 	var inputLink = req.body.inputLink;
 	var inputKortlink = req.body.inputKortlink;
+	var inputHiddenCheck = req.body.hiddenCheck;
+	let inputHidden;
+
+
+	if (inputHiddenCheck == "true") {
+
+		console.log("Kortlink er hidden!")
+
+		// Opdater
+		inputHidden = true;
+
+	}else {
+
+		console.log("Kortlink er IKKE hidden!")
+
+		// Opdater
+		inputHidden = false;
+
+	}
 
 	// Opret sql variable
-	sql = `INSERT INTO kortlink (link, kortlink) VALUES ("${inputLink}", "${inputKortlink}")`;
+	sql = `INSERT INTO kortlink (link, kortlink, hidden) VALUES ("${inputLink}", "${inputKortlink}", ${inputHidden})`;
 
 	// Kør connection som indæstter i DB
 	connection.query(sql, (err, result) => {
@@ -184,7 +223,7 @@ app.get("/favicon.ico", (req, res) => {
 })
 
 // Se alle oprettede kortlinks
-app.get("/all", function (req, res){
+app.get("/all", (req, res) => {
 
 
 	// Tjek om filen historik.json er oprettet, ellers opret den
@@ -215,15 +254,26 @@ app.get("/all", function (req, res){
 	let data = {};
 
 	// Mysql
-	connection.query(`SELECT * FROM kortlink WHERE kortlink="${kortlinkGet}"`, function (error, results, fields) {
+	connection.query(`SELECT * FROM kortlink WHERE hidden = false`, (error, results, fields) => {
 	  if (error) throw error;
 
 	  //  Tjek om der er resultater
 	  if (results != "") {
-	  	console.log(results[0]);
+	  	// console.log(results[0]);
 
 	  	// Indsæt modtaget data i data variable.
-			data["result"] = results;
+		data["result"] = results;
+
+		// Indsæt data i data variable
+		data["counter"] = historikJSON["counter"];
+
+		data["historik"] = historikJSON["historik"];
+		// data["historikString"] = historikJSON_STRHistorik;
+
+		// console.log("data", data)
+
+		// Brug index fra viewengine mappen
+		res.render('pages/all', { data: data });
 
 
 	  }else {
@@ -239,19 +289,6 @@ app.get("/all", function (req, res){
 	  }
 
 	});
-
-	// Indsæt data i data variable
-	data["counter"] = historikJSON["counter"];
-	// data["historik"] = historikJSON["historik"];
-	data["historikString"] = historikJSON_STRHistorik;
-	if (req.query.result == "success") {
-		data["result"] = "success";
-	}else {
-		data["result"] = "";
-	}
-
-	// Brug index fra viewengine mappen
-	res.render('pages/index', { data: data });
 
 });
 
