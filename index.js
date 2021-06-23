@@ -225,7 +225,6 @@ app.get("/favicon.ico", (req, res) => {
 // Se alle oprettede kortlinks
 app.get("/all", (req, res) => {
 
-
 	// Tjek om filen historik.json er oprettet, ellers opret den
 	if (!(fs.existsSync("./historik.json"))) {
 		fs.writeFileSync("./historik.json", "{}");
@@ -253,8 +252,27 @@ app.get("/all", (req, res) => {
 	// Opret data varieble
 	let data = {};
 
+	// Tilføj search data
+	data["search"] = req.query.s;
+
+	// Opret var til sql query
+	let sqlQuery;
+
+	// Tjek om der er søgt efter noget
+	if (req.query.s) {
+		
+		// Søg & opdater SQL
+		sqlQuery = `SELECT * FROM kortlink WHERE hidden = false AND (kortlink LIKE "%${req.query.s}%" OR link LIKE "%${req.query.s}%")`
+
+	}else {
+		
+		// Plain SQL
+		sqlQuery = `SELECT * FROM kortlink WHERE hidden = false`;
+	
+	}
+
 	// Mysql
-	connection.query(`SELECT * FROM kortlink WHERE hidden = false`, (error, results, fields) => {
+	connection.query(sqlQuery, (error, results, fields) => {
 	  if (error) throw error;
 
 	  //  Tjek om der er resultater

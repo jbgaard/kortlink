@@ -28,11 +28,21 @@
 
     <hr>
 
-    <div class="container-fluid d-flex flex-wrap">
+    <div class="container-fluid d-flex">
 
         <div class="w-75">
 
-                    <h1>Alle offentlige kortlinks:</h1>
+                    <h1>
+                        Alle offentlige kortlinks:
+                    </h1>
+
+                    <form method="GET" class="form-inline d-flex justify-content-center">
+                        <div class="form-group mx-sm-3 mb-2 w-50 d-flex justify-content-center">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Søg" name="s" value="<%- data['search'] %>">
+                            <input type="submit" value="Søg" class="btn btn-primary">
+                        </div>
+                    </form>
+
                         <div class="d-inline-flex flex-wrap justify-content-center">
                             <% if(data["result"] != "") { %>
                                 <% data["result"].forEach((item => { %>
