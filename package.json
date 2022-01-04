@@ -4,7 +4,12 @@
   "description": "kortlinkRedirector",
   "main": "index.js",
   "scripts": {
-    "test": "start"
+    "test": "nodemon index.js",
+	"start": "node index.js",
+	"docker-full": "yarn docker-build && yarn docker-tag && yarn docker-push",
+    "docker-build": "docker build -t famasmaster78/kortlink .",
+    "docker-tag": "docker tag famasmaster78/kortlink docker.jbgaard.xyz/kortlink",
+    "docker-push": "docker push docker.jbgaard.xyz/kortlink"
   },
   "repository": {
     "type": "git",
